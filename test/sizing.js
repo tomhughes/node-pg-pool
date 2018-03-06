@@ -34,7 +34,7 @@ describe('pool size of 1', () => {
   it('can only send 1 query at a time', co.wrap(function * () {
     const pool = new Pool({ max: 1 })
     const queries = _.times(20, (i) => {
-      return pool.query('SELECT COUNT(*) as counts FROM pg_stat_activity')
+      return pool.query('SELECT COUNT(*) as counts FROM pg_stat_activity WHERE datid IS NOT NULL')
     })
     const results = yield Promise.all(queries)
     const counts = results.map(res => parseInt(res.rows[0].counts), 10)
